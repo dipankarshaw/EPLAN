@@ -1,0 +1,14 @@
+---
+- name: Create node configurations.
+  template:
+    src: templates/{{ item.1 }}_template.j2
+    dest: "{{ location }}/{{ item.1 }}_{{ item.0.name }}.cfg"
+  vars:
+    side: "{{ item.0.end }}"
+  loop: "{{ site_list|product(job)|list }}"
+  loop_control:
+    label: "{{ item.0.name }} and {{ item.1 }}"
+  delegate_to: "localhost"
+  run_once: true
+  tags: create_config,create_service,delete_service,config_policy
+# tasks file for /root/Dansi/jinja/roles/create_config

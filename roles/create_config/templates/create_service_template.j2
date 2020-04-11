@@ -1,0 +1,100 @@
+{% if side == 'Aend' -%}
+{% for item in range(FF_start_evi_ID,FF_end_evi_ID) -%}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport encapsulation dot1ad {{ item }} dot1q {{ item }}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport rewrite ingress tag pop 2 symmetric
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy1.PARENT }}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit maximum {{ MAC_LIMIT}}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit action no-flood
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mtu 9208
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[0].main_interface }}.{{ item }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[0].main_interface }}.{{ item }} storm-control unknown-unicast kbps 20000
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[0].main_interface }}.{{ item }} storm-control multicast kbps 20000
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[0].main_interface }}.{{ item }} storm-control broadcast kbps 20000 
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} evi {{ 40000 + item|int }}
+evpn evi {{ 40000 + item|int }} advertise-mac
+evpn interface {{ site_list[0].main_interface }} ethernet-segment identifier type 0 {{ site_list[0].ESI_ID }}
+{% if CCM_REQUIRED == 'y'%}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF continuity-check interval {{ CCM_interval }}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF mep crosscheck mep-id {{ site_list[0].remote_MEP1 }}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF mep crosscheck mep-id {{ site_list[0].remote_MEP2 }}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF log continuity-check errors
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF log crosscheck errors
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF log continuity-check mep changes
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport ethernet cfm mep domain COLT-1 service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mep-id {{ site_list[0].local_MEP }} cos 2
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport ethernet cfm mep domain COLT-1 service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mep-id {{ site_list[0].local_MEP }} sla operation profile DMM2 target mep-id {{ site_list[0].remote_MEP1 }}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport ethernet cfm mep domain COLT-1 service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mep-id {{ site_list[0].local_MEP }} sla operation profile DMM2 target mep-id {{ site_list[0].remote_MEP2 }}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport ethernet cfm mep domain COLT-1 service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mep-id {{ site_list[0].local_MEP }} sla operation profile SLM2 target mep-id {{ site_list[0].remote_MEP1 }}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport ethernet cfm mep domain COLT-1 service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mep-id {{ site_list[0].local_MEP }} sla operation profile SLM2 target mep-id {{ site_list[0].remote_MEP2 }}
+{% else -%}
+{% endif -%}
+{% endfor -%}
+{% elif side == 'Bend' -%}
+{% for item in range(FF_start_evi_ID,FF_end_evi_ID) -%}
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport encapsulation dot1ad {{ item }} dot1q {{ item }}
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport rewrite ingress tag pop 2 symmetric
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy1.PARENT }}
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit maximum {{ MAC_LIMIT}}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit action no-flood
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mtu 9208
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[1].main_interface }}.{{ item }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[1].main_interface }}.{{ item }} storm-control unknown-unicast kbps 20000
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[1].main_interface }}.{{ item }} storm-control multicast kbps 20000
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[1].main_interface }}.{{ item }} storm-control broadcast kbps 20000 
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} evi {{ 40000 + item|int }}
+evpn evi {{ 40000 + item|int }} advertise-mac
+evpn interface {{ site_list[1].main_interface }} ethernet-segment identifier type 0 {{ site_list[1].ESI_ID }}
+{% if CCM_REQUIRED == 'y'%}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF continuity-check interval {{ CCM_interval }}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF mep crosscheck mep-id {{ site_list[1].remote_MEP1 }}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF mep crosscheck mep-id {{ site_list[1].remote_MEP2 }}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF log continuity-check errors
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF log crosscheck errors
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF log continuity-check mep changes
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport ethernet cfm mep domain COLT-1 service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mep-id {{ site_list[1].local_MEP }} cos 2
+{% else -%}
+{% endif -%}
+{% endfor -%}
+{% elif side == 'Cend' -%}
+{% for item in range(FF_start_evi_ID,FF_end_evi_ID) -%}
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport encapsulation dot1ad {{ item }} dot1q {{ item }}
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport rewrite ingress tag pop 2 symmetric
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy1.PARENT }}
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit maximum {{ MAC_LIMIT}}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit action no-flood
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mtu 9208
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[2].main_interface }}.{{ item }}
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[2].main_interface }}.{{ item }} storm-control unknown-unicast kbps 20000
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[2].main_interface }}.{{ item }} storm-control multicast kbps 20000
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} interface {{ site_list[2].main_interface }}.{{ item }} storm-control broadcast kbps 20000 
+l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} evi {{ 40000 + item|int }}
+evpn evi {{ 40000 + item|int }} advertise-mac
+evpn interface {{ site_list[2].main_interface }} ethernet-segment identifier type 0 {{ site_list[2].ESI_ID }}
+{% if CCM_REQUIRED == 'y'%}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF continuity-check interval {{ CCM_interval }}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF mep crosscheck mep-id {{ site_list[2].remote_MEP1 }}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF mep crosscheck mep-id {{ site_list[2].remote_MEP2 }}
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF log continuity-check errors
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF log crosscheck errors
+ethernet cfm domain COLT-1 level 1 id null service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} id icc-based LE {{ item }}FF log continuity-check mep changes
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport ethernet cfm mep domain COLT-1 service {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mep-id {{ site_list[2].local_MEP }} cos 2
+{% else -%}
+{% endif -%}
+{% endfor -%}
+{% else -%}
+ this is me
+{% endif %}
