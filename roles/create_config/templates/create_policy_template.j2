@@ -30,8 +30,8 @@ policy-map {{ ingress_policy1.CHILD }}
  class BUSINESS1-PCP-4
   police rate percent {{ ingress_policy1.B1_PERCENT }} burst 60 bytes peak-rate percent 30 peak-burst 100 kbytes
   !
-  set traffic-class {{ ingress_policy1.B1_QOSG }}
-  set qos-group {{ ingress_policy1.B1_TC }}
+  set traffic-class {{ ingress_policy1.B1_TC }}
+  set qos-group {{ ingress_policy1.B1_QOSG }}
  !
  class class-default
   police rate percent {{ ingress_policy1.STANDARD_PERCENT }} burst 500 kbytes peak-rate percent 100
@@ -144,8 +144,8 @@ policy-map {{ ingress_policy1.CHILD }}
  class BUSINESS1-PCP-4
   police rate percent {{ ingress_policy1.B1_PERCENT }} burst 60 bytes peak-rate percent 30 peak-burst 100 kbytes
   !
-  set traffic-class {{ ingress_policy1.B1_QOSG }}
-  set qos-group {{ ingress_policy1.B1_TC }}
+  set traffic-class {{ ingress_policy1.B1_TC }}
+  set qos-group {{ ingress_policy1.B1_QOSG }}
  !
  class class-default
   police rate percent {{ ingress_policy1.STANDARD_PERCENT }} burst 500 kbytes peak-rate percent 100
@@ -258,8 +258,8 @@ policy-map {{ ingress_policy1.CHILD }}
  class BUSINESS1-PCP-4
   police rate percent {{ ingress_policy1.B1_PERCENT }} burst 60 bytes peak-rate percent 30 peak-burst 100 kbytes
   !
-  set traffic-class {{ ingress_policy1.B1_QOSG }}
-  set qos-group {{ ingress_policy1.B1_TC }}
+  set traffic-class {{ ingress_policy1.B1_TC }}
+  set qos-group {{ ingress_policy1.B1_QOSG }}
  !
  class class-default
   police rate percent {{ ingress_policy1.STANDARD_PERCENT }} burst 500 kbytes peak-rate percent 100
