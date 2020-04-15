@@ -54,7 +54,7 @@
   tasks:
   - shell: |
       cd {{ location }}
-      rm -rf * 
+      rm -rf *.cfg 
     tags: create_config,create_service,delete_service,config_policy,delete
     # tags: create_config,create_service,delete_service,config_policy
 ...
