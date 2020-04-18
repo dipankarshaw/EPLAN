@@ -30,31 +30,31 @@ policy-map {{ ingress_policy1.PARENT }}
  end-policy-map
 !
 policy-map {{ ingress_policy1.CHILD }}
- class PREMIUM-PCP-5-7
+ class PREMIUM-PCP-5-7_DIP
   police rate percent {{ ingress_policy1.PREMIUM_PERCENT }} burst 50 kbytes
   !
   set qos-group {{ ingress_policy1.PREMIUM_QOSG }}
   set traffic-class {{ ingress_policy1.PREMIUM_TC }}
  !
- class BUSINESS2-PCP-3
+ class BUSINESS2-PCP-2_DIP
   police rate percent {{ ingress_policy1.B2_PERCENT }} burst 200 kbytes peak-rate percent 100 peak-burst 400 kbytes
   !
   set qos-group {{ ingress_policy1.B2_QOSG }}
   set traffic-class {{ ingress_policy1.B2_TC }}
  !
- class BUSINESS3-PCP-2
+ class BUSINESS3-PCP-1_DIP
   police rate percent {{ ingress_policy1.B3_PERCENT }} burst 500 kbytes peak-rate percent 100 peak-burst 1000 kbytes
   !
   set qos-group {{ ingress_policy1.B3_QOSG }}
   set traffic-class {{ ingress_policy1.B3_TC }}
  !
- class BUSINESS1-PCP-4
+ class BUSINESS1-PCP-3_DIP
   police rate percent {{ ingress_policy1.B1_PERCENT }} burst 60 bytes peak-rate percent 30 peak-burst 100 kbytes
   !
   set traffic-class {{ ingress_policy1.B1_TC }}
   set qos-group {{ ingress_policy1.B1_QOSG }}
  !
- class class-default
+ class standard-PCP-4_0_DIP
   police rate percent {{ ingress_policy1.STANDARD_PERCENT }} burst 500 kbytes peak-rate percent 100
   !
   set qos-group {{ ingress_policy1.STANDARD_QOSG }}
@@ -62,20 +62,24 @@ policy-map {{ ingress_policy1.CHILD }}
  !
  end-policy-map
 !
-class-map match-any PREMIUM-PCP-5-7
+class-map match-any PREMIUM-PCP-5-7_DIP
  match cos 5 6 7
  end-class-map
 !
-class-map match-any BUSINESS1-PCP-4
- match cos 4
- end-class-map
-!
-class-map match-any BUSINESS2-PCP-3
+class-map match-any BUSINESS1-PCP-3_DIP
  match cos 3
  end-class-map
 !
-class-map match-any BUSINESS3-PCP-2
+class-map match-any BUSINESS2-PCP-2_DIP
  match cos 2
+ end-class-map
+!
+class-map match-any BUSINESS3-PCP-1_DIP
+ match cos 1
+ end-class-map
+!
+class-map match-any standard-PCP-4_0_DIP
+ match cos 4 0
  end-class-map
 !
 policy-map {{ eggress_policy1.PARENT }}
@@ -217,31 +221,31 @@ policy-map {{ ingress_policy1.PARENT }}
  end-policy-map
 !
 policy-map {{ ingress_policy1.CHILD }}
- class PREMIUM-PCP-5-7
+ class PREMIUM-PCP-5-7_DIP
   police rate percent {{ ingress_policy1.PREMIUM_PERCENT }} burst 50 kbytes
   !
   set qos-group {{ ingress_policy1.PREMIUM_QOSG }}
   set traffic-class {{ ingress_policy1.PREMIUM_TC }}
  !
- class BUSINESS2-PCP-3
+ class BUSINESS2-PCP-2_DIP
   police rate percent {{ ingress_policy1.B2_PERCENT }} burst 200 kbytes peak-rate percent 100 peak-burst 400 kbytes
   !
   set qos-group {{ ingress_policy1.B2_QOSG }}
   set traffic-class {{ ingress_policy1.B2_TC }}
  !
- class BUSINESS3-PCP-2
+ class BUSINESS3-PCP-1_DIP
   police rate percent {{ ingress_policy1.B3_PERCENT }} burst 500 kbytes peak-rate percent 100 peak-burst 1000 kbytes
   !
   set qos-group {{ ingress_policy1.B3_QOSG }}
   set traffic-class {{ ingress_policy1.B3_TC }}
  !
- class BUSINESS1-PCP-4
+ class BUSINESS1-PCP-3_DIP
   police rate percent {{ ingress_policy1.B1_PERCENT }} burst 60 bytes peak-rate percent 30 peak-burst 100 kbytes
   !
   set traffic-class {{ ingress_policy1.B1_TC }}
   set qos-group {{ ingress_policy1.B1_QOSG }}
  !
- class class-default
+ class standard-PCP-4_0_DIP
   police rate percent {{ ingress_policy1.STANDARD_PERCENT }} burst 500 kbytes peak-rate percent 100
   !
   set qos-group {{ ingress_policy1.STANDARD_QOSG }}
@@ -249,20 +253,24 @@ policy-map {{ ingress_policy1.CHILD }}
  !
  end-policy-map
 !
-class-map match-any PREMIUM-PCP-5-7
+class-map match-any PREMIUM-PCP-5-7_DIP
  match cos 5 6 7
  end-class-map
 !
-class-map match-any BUSINESS1-PCP-4
- match cos 4
- end-class-map
-!
-class-map match-any BUSINESS2-PCP-3
+class-map match-any BUSINESS1-PCP-3_DIP
  match cos 3
  end-class-map
 !
-class-map match-any BUSINESS3-PCP-2
+class-map match-any BUSINESS2-PCP-2_DIP
  match cos 2
+ end-class-map
+!
+class-map match-any BUSINESS3-PCP-1_DIP
+ match cos 1
+ end-class-map
+!
+class-map match-any standard-PCP-4_0_DIP
+ match cos 4 0
  end-class-map
 !
 policy-map {{ eggress_policy1.PARENT }}
@@ -407,31 +415,31 @@ policy-map {{ ingress_policy1.PARENT }}
  end-policy-map
 !
 policy-map {{ ingress_policy1.CHILD }}
- class PREMIUM-PCP-5-7
+ class PREMIUM-PCP-5-7_DIP
   police rate percent {{ ingress_policy1.PREMIUM_PERCENT }} burst 50 kbytes
   !
   set qos-group {{ ingress_policy1.PREMIUM_QOSG }}
   set traffic-class {{ ingress_policy1.PREMIUM_TC }}
  !
- class BUSINESS2-PCP-3
+ class BUSINESS2-PCP-2_DIP
   police rate percent {{ ingress_policy1.B2_PERCENT }} burst 200 kbytes peak-rate percent 100 peak-burst 400 kbytes
   !
   set qos-group {{ ingress_policy1.B2_QOSG }}
   set traffic-class {{ ingress_policy1.B2_TC }}
  !
- class BUSINESS3-PCP-2
+ class BUSINESS3-PCP-1_DIP
   police rate percent {{ ingress_policy1.B3_PERCENT }} burst 500 kbytes peak-rate percent 100 peak-burst 1000 kbytes
   !
   set qos-group {{ ingress_policy1.B3_QOSG }}
   set traffic-class {{ ingress_policy1.B3_TC }}
  !
- class BUSINESS1-PCP-4
+ class BUSINESS1-PCP-3_DIP
   police rate percent {{ ingress_policy1.B1_PERCENT }} burst 60 bytes peak-rate percent 30 peak-burst 100 kbytes
   !
   set traffic-class {{ ingress_policy1.B1_TC }}
   set qos-group {{ ingress_policy1.B1_QOSG }}
  !
- class class-default
+ class standard-PCP-4_0_DIP
   police rate percent {{ ingress_policy1.STANDARD_PERCENT }} burst 500 kbytes peak-rate percent 100
   !
   set qos-group {{ ingress_policy1.STANDARD_QOSG }}
@@ -439,20 +447,24 @@ policy-map {{ ingress_policy1.CHILD }}
  !
  end-policy-map
 !
-class-map match-any PREMIUM-PCP-5-7
+class-map match-any PREMIUM-PCP-5-7_DIP
  match cos 5 6 7
  end-class-map
 !
-class-map match-any BUSINESS1-PCP-4
- match cos 4
- end-class-map
-!
-class-map match-any BUSINESS2-PCP-3
+class-map match-any BUSINESS1-PCP-3_DIP
  match cos 3
  end-class-map
 !
-class-map match-any BUSINESS3-PCP-2
+class-map match-any BUSINESS2-PCP-2_DIP
  match cos 2
+ end-class-map
+!
+class-map match-any BUSINESS3-PCP-1_DIP
+ match cos 1
+ end-class-map
+!
+class-map match-any standard-PCP-4_0_DIP
+ match cos 4 0
  end-class-map
 !
 policy-map {{ eggress_policy1.PARENT }}

@@ -1,6 +1,5 @@
 ---
 colon: ":"
-# I am testing my chnages.
 FF_start_evi_ID: 1400
 FF_end_evi_ID: 1401
 dist: "{{ FF_end_evi_ID|int - FF_start_evi_ID }}"
@@ -12,11 +11,13 @@ BNE_ID: "{{ site_list[1].name}}"
 CNE_ID: "{{ site_list[2].name}}"
 MAC_LIMIT: 300
 SERVICE_NAME: "{{ ANE_ID }}-{{ BNE_ID }}-{{ CNE_ID }}"
+#Possible values of CCM_required is y or n
 CCM_REQUIRED: 'n'
-Flat_QOS: 'No'
+#Possible values of Flat_QOS is YES or NO
+Flat_QOS: 'NO'
 ingress_policy1: 
   PARENT: P2P_PARENT_HQOS_INGRESS_DIP
-  SHAPE: 30
+  SHAPE: 10
   CHILD: P2P_CHILD_HQOS_INGRESS_DIP
   PREMIUM_PERCENT: 15
   B1_PERCENT: 15
@@ -49,6 +50,7 @@ ingress_policy_flatQOS:
   Police_rate: 1000000
   TC: 4
   QOSG: 2
+
 eggress_policy_flatQOS:
   marker_policy: NNI-QOS-EGRESS-InnerCoS_DIP
   marker_policy_Premium_MatchQOS: 5
