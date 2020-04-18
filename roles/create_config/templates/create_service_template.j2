@@ -3,8 +3,15 @@
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport encapsulation dot1ad {{ item }} dot1q {{ item }}
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport rewrite ingress tag pop 2 symmetric
+{% if Flat_QOS == 'YES'%}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy_flatQOS.marker_shaper_policy }}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.shaper_policy }} account user-defined 26
+{% else -%}
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy1.PARENT }}
-interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
+interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }} account user-defined 26
+{% endif -%}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit maximum {{ MAC_LIMIT}}
@@ -38,8 +45,15 @@ interface {{ site_list[0].main_interface }}.{{ item }} l2transport ethernet cfm 
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport encapsulation dot1ad {{ item }} dot1q {{ item }}
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport rewrite ingress tag pop 2 symmetric
+{% if Flat_QOS == 'YES'%}
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy_flatQOS.marker_shaper_policy }}
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.shaper_policy }} account user-defined 26
+{% else -%}
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy1.PARENT }}
-interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }}
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
+interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }} account user-defined 26
+{% endif -%}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit maximum {{ MAC_LIMIT}}
@@ -69,8 +83,15 @@ interface {{ site_list[1].main_interface }}.{{ item }} l2transport ethernet cfm 
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport encapsulation dot1ad {{ item }} dot1q {{ item }}
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport rewrite ingress tag pop 2 symmetric
+{% if Flat_QOS == 'YES'%}
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy_flatQOS.marker_shaper_policy }}
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.shaper_policy }} account user-defined 26
+{% else -%}
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy1.PARENT }}
-interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }}
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
+interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }} account user-defined 26
+{% endif -%}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit maximum {{ MAC_LIMIT}}

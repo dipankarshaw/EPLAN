@@ -13,9 +13,10 @@ CNE_ID: "{{ site_list[2].name}}"
 MAC_LIMIT: 300
 SERVICE_NAME: "{{ ANE_ID }}-{{ BNE_ID }}-{{ CNE_ID }}"
 CCM_REQUIRED: 'n'
+Flat_QOS: 'No'
 ingress_policy1: 
   PARENT: P2P_PARENT_HQOS_INGRESS_DIP
-  SHAPE: 10
+  SHAPE: 30
   CHILD: P2P_CHILD_HQOS_INGRESS_DIP
   PREMIUM_PERCENT: 15
   B1_PERCENT: 15
@@ -38,11 +39,34 @@ eggress_policy1:
   SHAPE: 10
   CHILD: P2P_CHILD_HQOS_EGGRESS_DIP
   PREMIUM_PERCENT: 15
-  B1_PERCENT: 30
+  B1_PERCENT: 15  
   B2_PERCENT: 20
   B3_PERCENT: 20
-  STANDARD_PERCENT: 30 
+  STANDARD_PERCENT: 20
 
+ingress_policy_flatQOS:
+  marker_shaper_policy: BW-1000000Kbps-Class-B2-TG_DIP
+  Police_rate: 1000000
+  TC: 4
+  QOSG: 2
+eggress_policy_flatQOS:
+  marker_policy: NNI-QOS-EGRESS-InnerCoS_DIP
+  marker_policy_Premium_MatchQOS: 5
+  marker_policy_Premium_SETCOS: 5
+  marker_policy_B1_MatchQOS: 3
+  marker_policy_B1_SETCOS: 3
+  marker_policy_B2_MatchQOS: 2
+  marker_policy_B2_SETCOS: 2
+  marker_policy_B3_MatchQOS: 1
+  marker_policy_B3_SETCOS: 1
+  marker_policy_standard_CIR_MatchQOS: 4
+  marker_policy_standard_CIR_SETCOS: 4
+  marker_policy_standard_EIR_MatchQOS: 7
+  marker_policy_standard_EIR_SETCOS: 7
+  marker_policy_NC_MatchQOS: 6
+  marker_policy_NC_SETCOS: 6
+  shaper_policy: SHAPE-1000000Kbps-Class-ST-GE_DIP
+  Police_rate: 1000000
 job:
  - create_service
  - delete_service
