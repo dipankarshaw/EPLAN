@@ -9,7 +9,10 @@ location: "{{ Parent_Location }}/roles/create_config/files/"
 ANE_ID: "{{ site_list[0].name}}"
 BNE_ID: "{{ site_list[1].name}}"
 CNE_ID: "{{ site_list[2].name}}"
-MAC_LIMIT: 300
+MAC_LIMIT: 100
+BD_MTU: 1500
+MAC_FLOOD_ACTION: 'no-flood'
+# applicable values are no-flood, flood, shutdown
 SERVICE_NAME: "{{ ANE_ID }}-{{ BNE_ID }}-{{ CNE_ID }}"
 #Possible values of CCM_required is y or n
 CCM_REQUIRED: 'n'
@@ -17,7 +20,7 @@ CCM_REQUIRED: 'n'
 Flat_QOS: 'NO'
 ingress_policy1: 
   PARENT: P2P_PARENT_HQOS_INGRESS_DIP
-  SHAPE: 10
+  SHAPE: 100
   CHILD: P2P_CHILD_HQOS_INGRESS_DIP
   PREMIUM_PERCENT: 15
   B1_PERCENT: 15
@@ -67,7 +70,7 @@ eggress_policy_flatQOS:
   marker_policy_standard_EIR_SETCOS: 7
   marker_policy_NC_MatchQOS: 6
   marker_policy_NC_SETCOS: 6
-  shaper_policy: SHAPE-1000000Kbps-Class-ST-GE_DIP
+  shaper_policy: SHAPE-1000000Kbps-Class-B2-GE_DIP
   Police_rate: 1000000
 job:
  - create_service
@@ -93,13 +96,15 @@ site_list:
     remote_MEP1: 2
     remote_MEP2: 3
     ESI_ID: 00.00.00.00.00.05.05.05.05
+    port_type: 'Y-type'
  -  name: AR6
     end: Bend
     main_interface: TenGigE0/0/0/19
     local_MEP: 2
     remote_MEP1: 1
     remote_MEP2: 3
-    ESI_ID: 00.00.00.00.00.06.06.06.06
+    ESI_ID: 00.00.00.00.00.05.05.05.05
+    port_type: 'Y-type'
  -  name: AR14
     end: Cend
     main_interface: GigabitEthernet0/0/0/4
@@ -107,3 +112,5 @@ site_list:
     remote_MEP1: 1
     remote_MEP2: 2
     ESI_ID: 00.00.00.00.00.14.14.14.14
+    port_type: 'Y-type'
+# applicable port Type values are 'Y-type,X-type,P-type,F-type'
