@@ -12,16 +12,16 @@ interface {{ site_list[0].main_interface }}.{{ item }} l2transport rewrite ingre
 {% else -%}
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport encapsulation dot1q {{ item }}
 {% endif -%}
-{% if Flat_QOS == 'YES'%}
+{% if QOS_REQUIRED == 'YES'and Flat_QOS == 'YES'%}
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy_flatQOS.marker_shaper_policy }}
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.shaper_policy }} account user-defined 26
-{% else -%}
+{% elif QOS_REQUIRED == 'YES'and H_QOS == 'YES' -%}
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy1.PARENT }}
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
 interface {{ site_list[0].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }} account user-defined 26
+{% else -%}
 {% endif -%}
-l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit maximum {{ MAC_LIMIT}}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit action {{ MAC_FLOOD_ACTION }}
@@ -63,16 +63,16 @@ interface {{ site_list[1].main_interface }}.{{ item }} l2transport rewrite ingre
 {% else -%}
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport encapsulation dot1q {{ item }}
 {% endif -%}
-{% if Flat_QOS == 'YES'%}
+{% if QOS_REQUIRED == 'YES'and Flat_QOS == 'YES'%}
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy_flatQOS.marker_shaper_policy }}
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.shaper_policy }} account user-defined 26
-{% else -%}
+{% elif QOS_REQUIRED == 'YES'and H_QOS == 'YES' -%}
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy1.PARENT }}
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
 interface {{ site_list[1].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }} account user-defined 26
+{% else -%}
 {% endif -%}
-l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit maximum {{ MAC_LIMIT}}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit action {{ MAC_FLOOD_ACTION }}
@@ -110,16 +110,16 @@ interface {{ site_list[2].main_interface }}.{{ item }} l2transport rewrite ingre
 {% else -%}
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport encapsulation dot1q {{ item }}
 {% endif -%}
-{% if Flat_QOS == 'YES'%}
+{% if QOS_REQUIRED == 'YES'and Flat_QOS == 'YES'%}
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy_flatQOS.marker_shaper_policy }}
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.shaper_policy }} account user-defined 26
-{% else -%}
+{% elif QOS_REQUIRED == 'YES'and H_QOS == 'YES' -%}
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy input {{ ingress_policy1.PARENT }}
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy_flatQOS.marker_policy }}
 interface {{ site_list[2].main_interface }}.{{ item }} l2transport service-policy output {{ eggress_policy1.PARENT }} account user-defined 26
+{% else -%}
 {% endif -%}
-l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit maximum {{ MAC_LIMIT}}
 l2vpn bridge group {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} bridge-domain {{ SERVICE_NAME }}-DIP-FFCC-{{ item }} mac limit action {{ MAC_FLOOD_ACTION }}

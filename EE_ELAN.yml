@@ -2,7 +2,7 @@
 - name:
   hosts: NCS_BLR,localhost
   gather_facts: false
-  tags: create_config,create_service,delete_service,config_policy
+  tags: create_config,create_service,delete_service,config_policy,delete_policy
   vars:
     Parent_Location: 'absent'
   tasks:
@@ -48,6 +48,18 @@
       label: "{{ item.0.name }} and {{ item.1 }}"
     tags: delete_service
 
+  - name: "Delete policy from the Nodes"
+    napalm_install_config:
+      config_file: "{{ location }}{{ item.1 }}_{{ item.0.name }}.cfg"
+      provider: "{{ napalm_provider }}"
+      commit_changes: True
+      replace_config: False
+    loop: "{{ site_list|product(delete_policy_job)|list }}"
+    when: item.0.name == local_hostname
+    loop_control:
+      label: "{{ item.0.name }} and {{ item.1 }}"
+    tags: delete_policy
+
 - name: delete files
   hosts: localhost
   gather_facts: no
@@ -55,6 +67,18 @@
   - shell: |
       cd {{ location }}
       rm -rf *.cfg 
-    tags: create_config,create_service,delete_service,config_policy,delete
-    # tags: create_config,create_service,delete_service,config_policy
+    tags: create_config,create_service,delete_service,config_policy,delete,delete_policy
+
+- name: "verify configured services"
+  hosts: AR14
+  connection: network_cli
+  gather_facts: false
+  tags: verify_service
+  tasks:
+  - name: "verify the status of configuration"
+    iosxr_command:
+      commands: show evpn evi neighbor
+    register: output
+  - debug:
+      var: output.stdout_lines
 ...

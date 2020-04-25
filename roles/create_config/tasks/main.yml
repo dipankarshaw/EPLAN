@@ -10,6 +10,6 @@
     label: "{{ item.0.name }} and {{ item.1 }}"
   delegate_to: "localhost"
   run_once: true
-  tags: create_config,create_service,delete_service,config_policy
+  tags: create_config,create_service,delete_service,config_policy,delete_policy
 # tasks file for /root/Dansi/jinja/roles/create_config
 # dfre1

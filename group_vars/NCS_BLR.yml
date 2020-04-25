@@ -17,7 +17,9 @@ SERVICE_NAME: "{{ ANE_ID }}-{{ BNE_ID }}-{{ CNE_ID }}"
 #Possible values of CCM_required is y or n
 CCM_REQUIRED: 'n'
 #Possible values of Flat_QOS is YES or NO
+QOS_REQUIRED: 'NO'
 Flat_QOS: 'NO'
+H_QOS: 'YES'
 ingress_policy1: 
   PARENT: P2P_PARENT_HQOS_INGRESS_DIP
   SHAPE: 100
@@ -82,6 +84,7 @@ create_service_job:
  - create_service
 delete_service_job:
   - delete_service
+delete_policy_job:
   - delete_policy
 napalm_provider:
   hostname: '{{ ansible_host }}'

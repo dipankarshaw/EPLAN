@@ -1,6 +1,6 @@
 {% if side == 'Aend','Bend','Cend' -%}
 {% for item in range(FF_start_evi_ID,FF_end_evi_ID) -%}
-{% if Flat_QOS == 'YES'-%}
+{% if QOS_REQUIRED == 'YES'and Flat_QOS == 'YES'%}
 policy-map {{ eggress_policy_flatQOS.shaper_policy }}
  class B2-TC4-Egress_DIP
   shape average {{ eggress_policy_flatQOS.Police_rate }} kbps
@@ -28,7 +28,58 @@ class-map match-any BUSINESS2-PCP-2_DIP
  match cos 2
  end-class-map
 !
-{% else -%}
+policy-map {{ eggress_policy_flatQOS.marker_policy}}
+ class Premium-MatchQOS
+  set cos {{ eggress_policy_flatQOS.marker_policy_Premium_SETCOS }}
+ !
+ class Business1-MatchQOS
+  set cos {{ eggress_policy_flatQOS.marker_policy_B1_SETCOS }}
+ !
+ class Business2-MatchQOS
+  set cos {{ eggress_policy_flatQOS.marker_policy_B2_SETCOS }}
+ !
+ class Business3-MatchQOS
+  set cos {{ eggress_policy_flatQOS.marker_policy_B3_SETCOS }}
+ !
+ class Standard-CIR-MatchQOS
+  set cos {{ eggress_policy_flatQOS.marker_policy_standard_CIR_SETCOS }}
+ !
+ class Standard-EIR-MatchQOS
+  set cos {{ eggress_policy_flatQOS.marker_policy_standard_EIR_SETCOS }}
+ !
+ class NC-MatchQOS
+  set cos {{ eggress_policy_flatQOS.marker_policy_NC_SETCOS }}
+ !
+ class class-default
+  set cos 0
+ !
+ end-policy-map
+!
+class-map match-any Business2-MatchQOS
+ match qos-group {{ eggress_policy_flatQOS.marker_policy_B2_MatchQOS }}
+ end-class-map
+!
+class-map match-any Business1-MatchQOS
+ match qos-group {{ eggress_policy_flatQOS.marker_policy_B1_MatchQOS }}
+ end-class-map
+!
+class-map match-any Premium-MatchQOS
+ match qos-group {{ eggress_policy_flatQOS.marker_policy_Premium_MatchQOS }}
+ end-class-map
+!
+class-map match-any Business3-MatchQOS
+ match qos-group {{ eggress_policy_flatQOS.marker_policy_B3_MatchQOS }}
+ end-class-map
+!
+class-map match-any Standard-CIR-MatchQOS
+ match qos-group {{ eggress_policy_flatQOS.marker_policy_standard_CIR_MatchQOS }}
+ end-class-map
+!
+class-map match-any NC-MatchQOS
+ match qos-group {{ eggress_policy_flatQOS.marker_policy_NC_MatchQOS}}
+ end-class-map
+!
+{% elif QOS_REQUIRED == 'YES'and H_QOS == 'YES' -%}
 policy-map {{ ingress_policy1.PARENT }}
  class class-default
   service-policy {{ ingress_policy1.CHILD }}
@@ -144,7 +195,6 @@ class-map match-any Standard-CIR-TC2-Egress
  match traffic-class 2
  end-class-map
 !
-{% endif -%}
 policy-map {{ eggress_policy_flatQOS.marker_policy}}
  class Premium-MatchQOS
   set cos {{ eggress_policy_flatQOS.marker_policy_Premium_SETCOS }}
@@ -196,6 +246,8 @@ class-map match-any NC-MatchQOS
  match qos-group {{ eggress_policy_flatQOS.marker_policy_NC_MatchQOS}}
  end-class-map
 !
+{% else -%}
+{% endif -%}
 {% endfor -%}
 {% else -%}
  this is me
