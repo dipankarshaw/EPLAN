@@ -70,14 +70,16 @@
     tags: create_config,create_service,delete_service,config_policy,delete,delete_policy
 
 - name: "verify configured services"
-  hosts: AR14
+  hosts: NCS_BLR
   connection: network_cli
   gather_facts: false
   tags: verify_service
   tasks:
   - name: "verify the status of configuration"
     iosxr_command:
-      commands: show evpn evi neighbor
+      commands: 
+        - 'show evpn evi neighbor'
+        - 'show l2vpn bridge-domain summary'
     register: output
   - debug:
       var: output.stdout_lines
