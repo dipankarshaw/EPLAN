@@ -78,7 +78,6 @@
   - name: "verify the status of configuration"
     iosxr_command:
       commands: 
-        - 'show evpn evi neighbor'
         - 'show l2vpn bridge-domain summary'
     register: output
   - debug:
