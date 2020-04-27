@@ -3,7 +3,7 @@
 a=1
 b=100
 Step=100
-end=200
+end=600
 
 echo "
 *******************************************************************
@@ -35,6 +35,8 @@ Test-Step :
 ansible-playbook EE_ELAN.yml --tags verify_service
 a=1
 b=100
+Step=100
+end=600
  until [ $a -ge $end ]
  do
  echo "----------------------------------------------------------------------
@@ -51,4 +53,4 @@ b=100
  a=`expr $a + $Step`
  b=`expr $b + $Step` 
  done
-#ansible-playbook EE_ELAN.yml -e '{"FF_start_evi_ID":1,"FF_end_evi_ID":2}' --tags delete_policy
+ansible-playbook EE_ELAN.yml -e '{"FF_start_evi_ID":1,"FF_end_evi_ID":2}' --tags delete_policy
