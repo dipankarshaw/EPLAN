@@ -9,7 +9,7 @@ location: "{{ Parent_Location }}/roles/create_config/files/"
 ANE_ID: "{{ site_list[0].name}}"
 BNE_ID: "{{ site_list[1].name}}"
 CNE_ID: "{{ site_list[2].name}}"
-MAC_LIMIT: 100
+MAC_LIMIT: 64000
 BD_MTU: 1500
 MAC_FLOOD_ACTION: 'no-flood'
 # applicable values are no-flood, flood, shutdown
@@ -19,10 +19,10 @@ CCM_REQUIRED: 'n'
 #Possible values of Flat_QOS is YES or NO
 QOS_REQUIRED: 'NO'
 Flat_QOS: 'NO'
-H_QOS: 'YES'
+H_QOS: 'NO'
 ingress_policy1: 
   PARENT: P2P_PARENT_HQOS_INGRESS_DIP
-  SHAPE: 100
+  SHAPE: 10
   CHILD: P2P_CHILD_HQOS_INGRESS_DIP
   PREMIUM_PERCENT: 15
   B1_PERCENT: 15
@@ -106,7 +106,7 @@ site_list:
     local_MEP: 2
     remote_MEP1: 1
     remote_MEP2: 3
-    ESI_ID: 00.00.00.00.00.05.05.05.05
+    ESI_ID: 00.00.00.00.00.06.06.06.06
     port_type: 'Y-type'
  -  name: AR14
     end: Cend

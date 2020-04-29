@@ -33,7 +33,7 @@
     loop: "{{ site_list|product(create_service_job)|list }}"
     when: item.0.name == local_hostname
     loop_control:
-      label: "{{ item.0.name }} and {{ item.1 }}"
+      label: "{{ item.0.name }} and {{ item.1 }} from EVI: {{FF_start_evi_ID}} to EVI:{{ FF_end_evi_ID}}"
     tags: create_service
     
   - name: "Delete the configuration from the Nodes"
@@ -45,7 +45,7 @@
     loop: "{{ site_list|product(delete_service_job)|list }}"
     when: item.0.name == local_hostname
     loop_control:
-      label: "{{ item.0.name }} and {{ item.1 }}"
+      label: "{{ item.0.name }} and {{ item.1 }} from EVI: {{FF_start_evi_ID}} to EVI:{{ FF_end_evi_ID}}"
     tags: delete_service
 
   - name: "Delete policy from the Nodes"
