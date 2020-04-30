@@ -1,7 +1,7 @@
 ---
 colon: ":"
 FF_start_evi_ID: 1400
-FF_end_evi_ID: 1401
+FF_end_evi_ID: 1600
 dist: "{{ FF_end_evi_ID|int - FF_start_evi_ID }}"
 CCM_interval: 10s
 remove_files: true
@@ -22,7 +22,7 @@ Flat_QOS: 'NO'
 H_QOS: 'NO'
 ingress_policy1: 
   PARENT: P2P_PARENT_HQOS_INGRESS_DIP
-  SHAPE: 10
+  SHAPE: "10 Mbps"
   CHILD: P2P_CHILD_HQOS_INGRESS_DIP
   PREMIUM_PERCENT: 15
   B1_PERCENT: 15
@@ -42,7 +42,7 @@ ingress_policy1:
 
 eggress_policy1:
   PARENT: P2P_PARENT_HQOS_EGGRESS_DIP
-  SHAPE: 10
+  SHAPE: "10 Mbps"
   CHILD: P2P_CHILD_HQOS_EGGRESS_DIP
   PREMIUM_PERCENT: 15
   B1_PERCENT: 15  

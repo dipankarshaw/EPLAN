@@ -83,7 +83,7 @@ class-map match-any NC-MatchQOS
 policy-map {{ ingress_policy1.PARENT }}
  class class-default
   service-policy {{ ingress_policy1.CHILD }}
-  police rate percent {{ ingress_policy1.SHAPE }}
+  police rate {{ ingress_policy1.SHAPE }}
   !
  !
  end-policy-map
@@ -144,7 +144,7 @@ class-map match-any standard-PCP-4_0_DIP
 policy-map {{ eggress_policy1.PARENT }}
  class class-default
   service-policy {{ eggress_policy1.CHILD }}
-  shape average percent {{ eggress_policy1.SHAPE }}
+  shape average {{ eggress_policy1.SHAPE }}
  !
  end-policy-map
 !
